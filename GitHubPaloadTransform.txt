@@ -1,0 +1,53 @@
+function transformPayload(payload) {
+  console.log("GitHub payload: " + JSON.stringify(payload));
+  
+  var gatewayPayloads = [];
+  for each (var commit in payload.commits) {
+        console.log("warning - In the for loop")
+        gatewayPayloads.push(createCommitPayload(payload, commit))
+  }
+  return gatewayPayloads;
+}
+ 
+function createCommitPayload(payload, commit, repository) {
+     
+    var message = commit.message;
+     
+     var jira_matcher = /[A-Z]+-?\d+/g
+     var issueId = message.match(jira_matcher);
+     
+     if (!issueId) {
+         console.log("No formatted ID found");
+         return undefined;
+     } else {
+         issueId = issueId[0]; 
+    console.log("FormattedID: " + issueId);
+         
+     }
+    
+    var jira_url = commit.url + " Submitted on: "+ commit.timestamp+ " by " + commit.author.email;
+     
+    var toSend =  
+        {
+          "formatted_id": issueId,
+          "changes": jira_url,
+          "author_name": commit.author.name,
+          "author_email": commit.author.email,
+          "commitmessage": commit.message,
+          "created": commit.timestamp,
+          "version": commit.id,
+          "url": commit.url,
+          "branch_name": payload.ref,
+          "files_added": commit.added[0],
+          "files_removed": commit.removed[0],
+          "files_modified": commit.modified[0],
+          "Changeset_repository_id": payload.repository.id.toString(),
+          "Changeset_repository_url": payload.repository.url,
+          "repository_name": payload.repository.name
+          
+        }
+        
+        console.log("finalSend:" + JSON.stringify(toSend))
+        return toSend
+     
+}
