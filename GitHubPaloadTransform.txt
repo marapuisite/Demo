@@ -35,7 +35,7 @@ function createCommitPayload(payload, commit, repository) {
           "author_email": commit.author.email,
           "commitmessage": commit.message,
           "created": commit.timestamp,
-          "version": commit.id,
+          "version": commit.id, 
           "url": commit.url,
           "branch_name": payload.ref,
           "files_added": commit.added[0],
