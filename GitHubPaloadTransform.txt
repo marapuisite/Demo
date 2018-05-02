@@ -24,7 +24,6 @@ function createCommitPayload(payload, commit, repository) {
     console.log("FormattedID: " + issueId);
          
      }
-    
     var jira_url = commit.url + " Submitted on: "+ commit.timestamp+ " by " + commit.author.email;
      
     var toSend =  
