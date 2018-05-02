@@ -8,7 +8,6 @@ function transformPayload(payload) {
   }
   return gatewayPayloads;
 }
- 
 function createCommitPayload(payload, commit, repository) {
      
     var message = commit.message;
